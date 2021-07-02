@@ -1,2 +1,2 @@
 # backup-dokuwiki
-This is about to back up DokuWiki
+This is about to back up Clear & Clean's DokuWiki.
