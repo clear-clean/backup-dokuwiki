@@ -1,17 +1,21 @@
-import os
 import datetime as dt
+import os
 import pyzipper
 
-from settings import AES_PASSWORD
 
-
-class Archiver:
-    def __init__(self, src_name, src_path, zip_dir):
+class ZipArchiver:
+    def __init__(self, src_name, src_path, archive_dir, password):
         self.source = {
             'name': src_name,
             'path': src_path
         }
-        self.zip_dir = zip_dir
+        self.archive_dir = archive_dir
+        self.password = password
+        self.current_archive_file = None
+
+    @property
+    def current_archive_path(self):
+        return os.path.join(self.archive_dir, self.current_archive_file)
 
     def generate_file_name(self):
         now = dt.datetime.now()
@@ -31,18 +35,22 @@ class Archiver:
                 )
 
     def compress(self):
-        zip_path = os.path.join(self.zip_dir, self.generate_file_name())
+        self.current_archive_file = self.generate_file_name()
+        current_archive_path = os.path.join(
+            self.archive_dir,
+            self.current_archive_file
+        )
         with pyzipper.AESZipFile(
-                zip_path,
+                current_archive_path,
                 'w',
                 compression=pyzipper.ZIP_DEFLATED,
                 encryption=pyzipper.WZ_AES
         ) as zip_file:
-            zip_file.pwd = AES_PASSWORD
+            zip_file.pwd = self.password
             self.zip_directory(zip_file)
 
-    def uncompress(self, file_name, destination):
-        zip_path = os.path.join(self.zip_dir, file_name)
+    def uncompress(self, filepath, destination):
+        zip_path = os.path.join(self.archive_dir, filepath)
         with pyzipper.AESZipFile(zip_path) as zip_file:
-            zip_file.pwd = AES_PASSWORD
+            zip_file.pwd = self.password
             zip_file.extractall(destination)
