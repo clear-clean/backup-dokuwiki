@@ -7,7 +7,7 @@ from settings import AES_PASSWORD
 
 
 SOURCE_NAME = 'dokuwiki'
-SOURCE_PATH = ''
+SOURCE_PATH = 'C:\inetpub\wwwroot\dokuwiki\data'
 BACKUP_DIR = 'dokuwiki_backups'
 
 
