@@ -1,3 +1,5 @@
+dokuwiki_backups/*.zip
+test.py
 .idea/
 sftp.py
 
