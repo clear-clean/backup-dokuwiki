@@ -4,14 +4,21 @@ import pyzipper
 
 
 class ZipArchiver:
-    def __init__(self, src_name, src_path, archive_dir, password):
+    def __init__(self, src_name, src_path, src_type, archive_dir, password):
         self.source = {
             'name': src_name,
-            'path': src_path
+            'path': src_path,
         }
         self.archive_dir = archive_dir
         self.password = password
         self.current_archive_file = None
+
+        if src_type == 'dir':
+            self.zip_func = self.zip_directory
+        elif src_type == 'file':
+            self.zip_func = self.zip_file
+        else:
+            raise Exception('Source type unknown.')
 
     @property
     def current_archive_path(self):
@@ -34,6 +41,9 @@ class ZipArchiver:
                     )
                 )
 
+    def zip_file(self, zip_file):
+        zip_file.write(self.source['path'])
+
     def compress(self):
         self.current_archive_file = self.generate_file_name()
         current_archive_path = os.path.join(
@@ -47,7 +57,7 @@ class ZipArchiver:
                 encryption=pyzipper.WZ_AES
         ) as zip_file:
             zip_file.pwd = self.password
-            self.zip_directory(zip_file)
+            self.zip_func(zip_file)
 
     def uncompress(self, filename, destination):
         zip_path = os.path.join(self.archive_dir, filename)
