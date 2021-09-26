@@ -20,11 +20,11 @@ class SftpLoader:
 
     def put(self, src_file, dst_file):
         with self.client.open_sftp() as sftp:
-            sftp.put(src_file, os.path.join(self.directory, dst_file))
+            sftp.put(src_file, self.directory + '/' + dst_file)
 
     def get(self, src_file, dst_file):
         with self.client.open_sftp() as sftp:
-            sftp.get(src_file, os.path.join(self.directory, dst_file))
+            sftp.get(src_file, self.directory + '/' + dst_file)
 
     def get_last_backup_file(self):
         files = self.client.listdir()
