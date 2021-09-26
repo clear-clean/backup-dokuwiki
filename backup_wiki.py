@@ -11,7 +11,7 @@ from settings import AES_PASSWORD
 SOURCE_NAME = 'wiki'
 SOURCE_PATH = 'C:\inetpub\wwwroot\dokuwiki\data'
 SOURCE_TYPE = 'dir'
-ARCHIVE_DIR = os.path.join('backups', 'wiki')
+ARCHIVE_DIR = 'backups/wiki'
 DESTINATION_DIR = 'wiki'
 
 
