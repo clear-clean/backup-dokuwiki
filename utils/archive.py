@@ -49,8 +49,8 @@ class ZipArchiver:
             zip_file.pwd = self.password
             self.zip_directory(zip_file)
 
-    def uncompress(self, filepath, destination):
-        zip_path = os.path.join(self.archive_dir, filepath)
+    def uncompress(self, filename, destination):
+        zip_path = os.path.join(self.archive_dir, filename)
         with pyzipper.AESZipFile(zip_path) as zip_file:
             zip_file.pwd = self.password
             zip_file.extractall(destination)
